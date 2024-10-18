@@ -1,4 +1,5 @@
 import { RouteLocation, createRouter, createWebHistory } from "vue-router";
+import { RouteLocationNormalized, NavigationGuardNext } from 'vue-router';
 import Login from "@/views/Login.vue";
 import Layout from "@/views/Layout.vue";
 import Files from "@/views/Files.vue";
@@ -35,7 +36,14 @@ const routes = [
   {
     path: "/login",
     name: "Login",
-    component: Login,
+    // component: Login,
+    component: Errors,
+    beforeEnter: (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
+      if (from.path != "/" || to.path != to.fullPath) {
+        window.location.assign(`//${window.location.host}${to.path}`);
+      }
+      next();
+    },
   },
   {
     path: "/share",
